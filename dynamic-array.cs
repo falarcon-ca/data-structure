@@ -7,6 +7,8 @@ internal class Program
         dynamicArray.Insert("a");
         dynamicArray.Insert("t");
         dynamicArray.Insert("a");
+        dynamicArray.RemoveAt(2);
+        dynamicArray.Insert("2");
         dynamicArray.Print();
     }
 }
@@ -14,7 +16,8 @@ internal class Program
 public class DynamicArray<T>
 {
     private T[] data;
-    private int counter;
+    private int lastIndex;
+
     public DynamicArray(int size)
     {
         data = new T[size];
@@ -22,7 +25,7 @@ public class DynamicArray<T>
 
     public void Insert(T value)
     {
-        if (data.Length == counter)
+        if (data.Length == lastIndex)
         {
             var newData = new T[data.Length * 2];
             for (int i = 0; i < data.Length; i++)
@@ -31,15 +34,27 @@ public class DynamicArray<T>
             }
             data = newData;
         }
-        data[counter++] = value;
+        data[lastIndex++] = value;
+    }
+
+    public void RemoveAt(int index)
+    {
+        if (index < 0 || index >= lastIndex)
+        {
+            throw new Exception("Invalid index");
+        }
+        for (int i = index; i < data.Length - 1; i++)
+        {
+            data[i] = data[i + 1];
+        }
+        lastIndex--;
     }
 
     public void Print()
     {
-        for (int i = 0; i < counter; i++)
+        for (int i = 0; i < lastIndex; i++)
         {
             Console.WriteLine(data[i]);
         }
     }
 }
-
